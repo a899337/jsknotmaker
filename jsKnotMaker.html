@@ -1,6 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>jsKnotMaker</title>
 <script type="text/javascript" src="jsKnotMaker_files/json2.js"></script>
 <script language="javascript">
@@ -156,7 +156,13 @@ var tiles = {
 //~ $ perl -le" printf qq!%d: \x22$_\x22,\n!,$i++ for a..z"
     var xIa = { 0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j", 10: "k", 11: "l", 12: "m", 13: "n", 14: "o", 15: "p", 16: "q", 17: "r", 18: "s", 19: "t", 20: "u", 21: "v", 22: "w", 23: "x", 24: "y", 25: "z" };
 
+//~ 2009-11-03- 08:15:01 for high-bits (which i didn't test), firefox does
+//~ encoding conversion, "\x99" becomes charcode 8482
+//~ now you can copy directly from .km files and paste into load prompt
+//~ OFCOURSE, saving from jsKnotMaker FOR KnotMaker  doesn't work yet
 
+var charCodeToalpha = { "100" : "d","101" : "e","102" : "f","103" : "g","104" : "h","105" : "i","106" : "j","107" : "k","108" : "l","109" : "m","110" : "n","111" : "o","112" : "p","115" : "s","116" : "t","117" : "u","118" : "v","119" : "w","120" : "x","121" : "y","122" : "z","123" : "\x7b","124" : "\x7c","125" : "\x7d","126" : "\x7e","127" : "\x7f","129" : "\x81","141" : "\x8d","143" : "\x8f","144" : "\x90","338" : "\x8c","353" : "\x9a","381" : "\x8e","402" : "\x83","710" : "\x88","732" : "\x98","8211" : "\x96","8212" : "\x97","8216" : "\x91","8217" : "\x92","8218" : "\x82","8220" : "\x93","8221" : "\x94","8222" : "\x84","8224" : "\x86","8225" : "\x87","8226" : "\x95","8230" : "\x85","8240" : "\x89","8364" : "\x80","8482" : "\x99","97" : "a","98" : "b","99" : "c" };
+//~ var alphaToCharCode = shallowReverse(charCodeToalpha); //~ JIC
 
     KnotMaker.kmParse = function (s){
         var o = {};
@@ -170,9 +176,16 @@ var tiles = {
             if( s[i].match(/^(Cypher String)=\s*(.*)$/    ) ){
                 var cs = RegExp.$2.split(' ');
                 var cso = {};
+                var out = "\n";
                 for(var i in cs ){ // col row tile color
                   if(cs[i].match(/^(..)(.*?)(\d\d)?$/)){
-                    cso[RegExp.$1]=RegExp.$2;
+//~ todo set max/min
+                    var k = RegExp.$1;
+                    var v = RegExp.$2;
+                    if( ! tiles[v] ){
+                        v = charCodeToalpha[v.charCodeAt(0)];
+                    }
+                    cso[k]=v;
                   }
                 }
                 if( cso ){
@@ -232,7 +245,8 @@ var tiles = {
 
         for(var i in tiles){
             out+='<a href="javascript:" onclick="KnotMaker.setTile(\''+tiles[i] +'\')">';
-            out+='<img border=1 hspace=0 vspace=0 src="'+tiles[i]+'"/></a>';
+            out+='<img border=1 hspace=0 vspace=0 src="'+tiles[i]+'"';
+            out+=' title=" '+i+' '+tiles[i]+'"/></a>';
             out+="\n";
         }
 
@@ -249,11 +263,11 @@ var tiles = {
 //~         var ix = 0;
 //~     for(var i in predefinedKnots){
 //~         ix++;
-//~ out+= '<a href="javascript:" onclick="KnotMaker.LoadPredefined(this.parentNode.parentNode,\''+i+'\');" title="'+i+'">'+ix+'</a> ';
+//~ out+= '<a href="javascript:" onclick="KnotMaker.LoadPredefined(this,\''+i+'\');" title="'+i+'">'+ix+'</a> ';
 //~     }
         var ix = 0;
 //~         out+='<select onchange="alert(this.options[this.selectedIndex].text);">';
-        out+='<select onchange="KnotMaker.LoadPredefined(this.parentNode.parentNode,this.options[this.selectedIndex].text);">';
+        out+='<select onchange="KnotMaker.LoadPredefined(this,this.options[this.selectedIndex].text);">';
         out+= '<option></option> ';
     for(var i in predefinedKnots){
         ix++;
@@ -267,11 +281,12 @@ out+= '<option>'+i+'</option> ';
 
     KnotMaker.drawToolBar2  = function (){
         var out = "";
-        out+= '<a href="javascript:" onclick="KnotMaker.LoadPromptKb(this.parentNode.parentNode)">load</a>'+"\n";
-        out+= 'SAVE(<a href="javascript:" onclick="KnotMaker.SavePromptKb(this.parentNode.parentNode)">prompt</a> ';
-        out+= '<a href="javascript:" onclick="KnotMaker.SaveWriteKb(this.parentNode.parentNode)">write</a>)';
+        out+= '<a href="javascript:" onclick="KnotMaker.LoadPromptKb(this)">load</a>'+"\n";
+        out+= 'SAVE(<a href="javascript:" onclick="KnotMaker.SavePromptKb(this)">prompt</a> ';
+        out+= '<sup><a href="javascript:" onclick="KnotMaker.SavePromptKbDebug(this)">D</a></sup> ';
+        out+= '<a href="javascript:" onclick="KnotMaker.SaveWriteKb(this)">write</a>)';
         out+= ' &nbsp; &nbsp; ';
-        out+= '<a href="javascript:" onclick="KnotMaker.clearAllGrid(this.parentNode.parentNode)">CLEAR ALL</a>'+"\n";
+        out+= '<a href="javascript:" onclick="KnotMaker.clearAllGrid(this)">CLEAR ALL</a>'+"\n";
         out+= KnotMaker.drawToolBar3();
         out+= "\n";
         return out;
@@ -294,20 +309,28 @@ out+= '<option>'+i+'</option> ';
 //~ alert('KnotMaker.CountMax '+maxR + ' '+ maxC );
         return [ maxR, maxC];
     };
+
     KnotMaker.LoadPromptKb = function(t){
-        var table = (t.getElementsByTagName('table'))[0];
+        var table = KnotMaker.findTable(t);
 //~         var cypher = prompt("Cypher String="," abi00 acj00 bac00 bbg00 bch00 bdj00 cbk00 ccg00 cdl00 dco00");
 var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00 ccg00 dcl00 cdo00");
         if(cypher){
-            var km = KnotMaker.kmParse("Cypher String="+cypher);
+            if( ! (/^Cypher String=/).test(cypher) ){
+                cypher = "Cypher String=" + cypher;
+            }
+            var km = KnotMaker.kmParse(cypher);
+
+//~             alert( cypher + JSON.stringify( km ));
+
             table.parentNode.innerHTML = KnotMaker.drawEditGrid(20,20,km["Cypher String"]);
-//~             alert(cypher);
+
 //~             alert(( '<pre style="overflow:scroll"> tiles: '+JSON.stringify( tiles ) +'</pre>'));
         }
         return;
     };
     KnotMaker.LoadPredefined = function(t,cs){
-        var table = (t.getElementsByTagName('table'))[0];
+        t.blur();
+        var table = KnotMaker.findTable(t);
         if( predefinedKnots[cs] ){
             if( typeof(predefinedKnots[cs])==="string"){
                 predefinedKnots[cs]= KnotMaker.kmParse(predefinedKnots[cs]);
@@ -318,7 +341,7 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         return;
     };
     KnotMaker.clearAllGrid = function(t){
-        var table = (t.getElementsByTagName('table'))[0];
+        var table = KnotMaker.findTable(t);
 //~ table.rows.length
         var out = KnotMaker.drawEditGrid(table.getAttribute("cols"), table.getAttribute("rows"));
 //~         alert(table + table.cols  + out);
@@ -326,13 +349,13 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         return;
     };
     KnotMaker.SaveWriteKb = function(t){
-        document.write('<pre>'+KnotMaker.GenKb(t));
+        document.write('<pre>'+KnotMaker.GenKb(KnotMaker.findTable(t)));
         document.close();
         return;
     };
     KnotMaker.GenKb = function(t){
 //~         var tds = (t.getElementsByTagName('table'))[0];
-        var tds = t.getElementsByTagName('td');
+        var tds = KnotMaker.findTable(t).getElementsByTagName('td');
         var out = "KnotMaker v1.2\nKnot Names=\nComments=\nBinary Signature=\nOvers Index=\nCypher String=";
         for( var i in tds ){
             if( tds[i] && tds[i].title && tds[i].title.match(/^.../)){
@@ -342,7 +365,50 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         out += "\n";
         return out;
     };
+    KnotMaker.findTable = function(t){
+        var target = null;
+        for(var i in [ 1,2,3,4,5 ]){
+            var tables = t.getElementsByTagName('table');
+            if(tables.length == 1){
+                target = tables[0];
+                if(target.className && (/\bdrawEditGrid\b/).test(target.className)){
+                    break;
+                }
+            }
+            t = t.parentNode;
+        }
+        return target;
+    };
     KnotMaker.SavePromptKb = function(t){ alert(KnotMaker.GenKb(t)); return; };
+    var charCodeAtTiles = {};
+    KnotMaker.SavePromptKbDebug = function(t){
+        var out = "document.characterSet "+document.characterSet+"\n";
+        out += JSON.stringify(tiles)+"\n\n";
+        out += JSON.stringify(  KnotMaker.GenKb(  KnotMaker.findTable(t)  )  ) +"\n\n";
+        function pp(s){ return '('+s+')' };
+        if(1){
+            if(charCodeAtTiles){
+                for(var i in tiles){
+                    charCodeAtTiles[pp(i.length) + pp(i.charCodeAt(0))] = tiles[i];
+                }
+            }
+            out += JSON.stringify(  charCodeAtTiles )+"\n\n";
+        }
+        alert(out);
+
+    if(1){
+        var ret = prompt("").split(" ");
+        var out = "\n";
+        for(var i in ret ){
+            if(ret[i].match(/^(..)(.*?)(\d\d)?$/)){
+                out += RegExp.$1 + pp(RegExp.$2.charCodeAt(0)) + "\n";
+            }
+        }
+        alert(out);
+    }
+
+        return;
+    };
 
     KnotMaker.drawIt = function(){
         var out = '<div class="KnotMaker">'+"\n"+KnotMaker.drawToolBar();
@@ -360,6 +426,73 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
 </script></head><body>
 <noscript>
 Please enable javascript<br/>
-<img src="jsKnotMaker_files/diyOverhand.gif" title="diyOverhand.gif"/>
+<!-- <img src="jsKnotMaker_files/diyOverhand.gif" title="diyOverhand.gif"/> -->
+<!-- 2009-11-04-04:22:12
+Cypher String= ban00 can00 dan00 ga00 han00 ian00 ja~00 bbb00 cbb00 dbb00 fbm00 gb00 hbb00 ibb00 jb00 kbp00 acm00 bc00 cce00 dc00 ecp00 fc00 gcc00 hc00 ic00 jca00 kc00 ad00 bd00 cdt00 dd00 ed00 fd00 gdz00 hdo00 ido00 jdv00 kd00 fer00 gez00 hen00 ien00 jev00 ker00 hfy00 ify00
+Cypher String= ga00 han00 ian00 ja~00 fbm00 gb00 hbb00 ibb00 jb00 kbp00 fc00 gcc00 hc00 ic00 jca00 kc00 fd00 gdz00 hdo00 ido00 jdv00 kd00 fer00 gez00 hen00 ien00 jev00 ker00 hfy00 ify00
+Cypher String= ga00 han00 ian00 ja~00 fbm00 gb00 hbb00 ibb00 jb00 kbp00 fc00 gcc00 hc00 ic00 jca00 kc00 fd00 gdz00 hdo00 ido00 jdv00 kd00 fer00 gez00 hen00 ien00 jev00 ker00 hfy00 ify00 fgc00 gg00 hg00 ig00 jg00 kgq00 lgp00
+
+-->
+<table class="NOTdrawEditGrid" rows="6" bgcolor="#dddddd" border="0" cols="8"> <tbody><tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="ga" width="50" height="50"><img src="jsKnotMaker_files/tile.x7F.50x50.gif"></td>
+<td title="han" width="50" height="50"><img src="jsKnotMaker_files/tile.n.50x50.gif"></td>
+<td title="ian" width="50" height="50"><img src="jsKnotMaker_files/tile.n.50x50.gif"></td>
+<td title="ja~" width="50" height="50"><img src="jsKnotMaker_files/tile.tilde.50x50.gif"></td>
+<td title="ka" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="la" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+<tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="fbm" width="50" height="50"><img src="jsKnotMaker_files/tile.m.50x50.gif"></td>
+<td title="gb?" width="50" height="50"><img src="jsKnotMaker_files/tile.x8C.50x50.gif"></td>
+<td title="hbb" width="50" height="50"><img src="jsKnotMaker_files/tile.b.50x50.gif"></td>
+<td title="ibb" width="50" height="50"><img src="jsKnotMaker_files/tile.b.50x50.gif"></td>
+<td title="jb?" width="50" height="50"><img src="jsKnotMaker_files/tile.x82.50x50.gif"></td>
+<td title="kbp" width="50" height="50"><img src="jsKnotMaker_files/tile.p.50x50.gif"></td>
+<td title="lb" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+<tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="fc?" width="50" height="50"><img src="jsKnotMaker_files/tile.x99.50x50.gif"></td>
+<td title="gcc" width="50" height="50"><img src="jsKnotMaker_files/tile.c.50x50.gif"></td>
+<td title="hc" width="50" height="50"><img src="jsKnotMaker_files/tile.x8F.50x50.gif"></td>
+<td title="ic?" width="50" height="50"><img src="jsKnotMaker_files/tile.x91.50x50.gif"></td>
+<td title="jca" width="50" height="50"><img src="jsKnotMaker_files/tile.a.50x50.gif"></td>
+<td title="kc?" width="50" height="50"><img src="jsKnotMaker_files/tile.x96.50x50.gif"></td>
+<td title="lc" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+<tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="fd?" width="50" height="50"><img src="jsKnotMaker_files/tile.x87.50x50.gif"></td>
+<td title="gdz" width="50" height="50"><img src="jsKnotMaker_files/tile.z.50x50.gif"></td>
+<td title="hdo" width="50" height="50"><img src="jsKnotMaker_files/tile.o.50x50.gif"></td>
+<td title="ido" width="50" height="50"><img src="jsKnotMaker_files/tile.o.50x50.gif"></td>
+<td title="jdv" width="50" height="50"><img src="jsKnotMaker_files/tile.v.50x50.gif"></td>
+<td title="kd?" width="50" height="50"><img src="jsKnotMaker_files/tile.x83.50x50.gif"></td>
+<td title="ld" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+<tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="fer" width="50" height="50"><img src="jsKnotMaker_files/tile.r.50x50.gif"></td>
+<td title="gez" width="50" height="50"><img src="jsKnotMaker_files/tile.z.50x50.gif"></td>
+<td title="hen" width="50" height="50"><img src="jsKnotMaker_files/tile.n.50x50.gif"></td>
+<td title="ien" width="50" height="50"><img src="jsKnotMaker_files/tile.n.50x50.gif"></td>
+<td title="jev" width="50" height="50"><img src="jsKnotMaker_files/tile.v.50x50.gif"></td>
+<td title="ker" width="50" height="50"><img src="jsKnotMaker_files/tile.r.50x50.gif"></td>
+<td title="le" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+<tr>
+<td title="fa" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="ff" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="gf" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="hfy" width="50" height="50"><img src="jsKnotMaker_files/tile.y.50x50.gif"></td>
+<td title="ify" width="50" height="50"><img src="jsKnotMaker_files/tile.y.50x50.gif"></td>
+<td title="jf" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="kf" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+<td title="lf" width="50" height="50"><img src="jsKnotMaker_files/tile.blank.50x50.gif"></td>
+</tr>
+</tbody></table>
 </noscript>
 </body></html>
