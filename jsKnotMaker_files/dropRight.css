@@ -1,0 +1,40 @@
+.dropRight {
+/*    border: 1px solid red; */
+    display:block;
+	font-family:"Times New Roman",Georgia,Serif;
+}
+
+.dropRight ul, .dropRight li {
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+}
+
+/*
+.dropRight ul li:hover , .dropRight ul li a:hover {
+    background: #dddddd;
+}
+*/
+.dropRight ul {
+    list-style-type: none;
+    display: inline-block;
+}
+
+/* sub lists hidden by default */
+.dropRight ul ul {
+    visibility: hidden;
+    display: none;
+}
+
+/* show the sub lists (children) */
+.dropRight ul li:hover >ul, .visibleInlineBlock:hover {
+    visibility: visible;
+/*     background:yellow; */
+    display: inline-block;
+}
+
+/* sub list items drop right, not down */
+.dropRight ul ul li {
+    position: relative;
+    float: left;
+}
+

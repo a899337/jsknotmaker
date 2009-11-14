@@ -2,12 +2,13 @@
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>jsKnotMaker</title>
+<link rel="stylesheet" type="text/css" href="jsKnotMaker_files/dropRight.css" />
+<link rel="stylesheet" type="text/css" href="jsKnotMaker_files/dropDown.css" />
 <script type="text/javascript" src="jsKnotMaker_files/json2.js"></script>
 <script language="javascript">
 <!--//
 /*
 
-//~ 2009-10-31- 11:00:52
 //~ jsKnotMaker.html
 //~ jsKnotMaker_files/json2.js
 //~ ...
@@ -20,14 +21,14 @@
 // Create a KnotMaker object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 if (!this.KnotMaker) {
-    this.KnotMaker = {};
+    this.KnotMaker = { VERSION : 20091112103203 }; //yyyymmddhhmmss //2009-11-12-10:32:16
 }
 (function () {
 //~ perl -MFile::Slurp -MData::JavaScript -MFile::Basename -le"my $f = shift; my $b = basename $f, q!.km!; print jsdump( $b, scalar read_file($f))"  
-//~ perl -MFile::Slurp -MData::JavaScript -MFile::Basename -le"f(my $f = shift; my $b = basename $f, q!.km!; print jsdump( $b, scalar read_file($f))) for(glob'*.km'){f($_)}"   >2
+//~ perl -MFile::Slurp -MData::JavaScript -MFile::Basename -le"sub f{my $f = shift; my $b = basename $f, q!.km!; print jsdump( $b, scalar read_file($f))} for(glob'*.km'){f($_)}"  >2
+
     var predefinedKnots = {
 "JanusBowline" : "KnotMaker v1.2\nKnot Names=\nComments=Created with jsKnotMaker from http://igkt.net/sm/index.php?action=dlattach;topic=1202.0;attach=749;image\nBinary Signature=\nOvers Index=\nCypher String= can00 cbf00 bci00 cch00 dce00 ece00 fce00 gcj00 hc00 ica00 bdk00 cdg00 ddj00 gd}00 bei00 ceg00 deh00 eee00 fe00 geh00 hee00 iee00 jej00 bff00 cff00 dff00 ef00 gff00 jff00 bgf00 cgk00 dgg00 egg00 fge00 ggg00 hge00 ige00 jgl00 ahi00 bhh00 che00 dhl00 ehf00 ghf00 aif00 bif00 eif00 gif00 ajk00 bjg00 cje00 dje00 ejl00 gjf00 bkk00 cke00 dke00 eke00 fke00 gkl00\n",
-"AdjustableGripHitch" : "KnotMaker v1.0\nKnot Names=Adjustable Grip Hitch\nComments=\nBinary Signature=100110010101010011010101\nOvers Index=12:19\nCypher String= adm00 bde00 cci00 cdg00 cef00 cfk00 dcj00 ddh00 dek00 dfe00 eci00 edg00 eel00 efe00 fcj00 fdh00 fek00 ffe00 gci00 gdg00 gel00 gfe00 hcj00 hdh00 hek00 hfe00 ici00 idg00 iel00 ife00 jad00 jbf00 jch00 jdg00 jef00 jfg00 jgk00 kcj00 kdh00 kef00 kfh00 kgl00 lde00 lfe00 maw00 mbw00 mcw00 mdx00 mew00 mfw00 mgw00 mhw00 ndj00 nef00 nfl00\n",
 "DoubleDragon" : "KnotMaker v1.1\nKnot Names=Double Dragon\nComments=The Double Dragon is similar to the Perfection Loop and the Tugboat Bowline.\nBinary Signature=110011001010010110010000100101111001110010110101\nOvers Index=24:29\nCypher String= acm00 ahm00 apm00 bai10 bbk10 bce00 bfi10 bgk10 bhe00 bpe00 cae10 cbe10 cce00 cfe10 cge10 che00 cpe00 dae10 dbe10 dce00 dfe10 dge10 dhe00 dpe00 eae10 ebe10 ece00 efe10 ege10 ehe00 epe00 fae10 fbe10 fce00 ffe10 fge10 fhe00 fpe00 gae10 gbe10 gce00 gfe10 gge10 ghe00 gni00 gof00 gpg00 gqk00 hae10 hbe10 hce00 hfe10 hge10 hhe00 hmi00 hng00 hok00 hpe00 hqe00 iae00 ibe00 ice00 ife00 ige00 ihe00 ime00 ine00 ioe00 ipe00 iqe00 jae00 jbe00 jce00 jfj00 jgg00 jhg00 jik00 jme00 jne10 joe10 jpe00 jqe00 kae00 kbe00 kce00 kfi00 kgh00 khh00 kil00 kli00 kmh00 kng10 kog10 kph00 kql00 lae00 lbe00 lce00 lfj00 lgg00 lhg00 lik00 llj00 lmg00 lng10 log10 lpg00 lqk00 mae00 mbe00 mce00 med00 mff00 mgh00 mhh00 mil00 mkd00 mlf00 mmh00 mng10 mog10 mph00 mql00 nae00 nbe00 nce00 nge00 nhe00 nme00 nne10 noe10 npe00 oae00 obj00 ocl00 ogj00 ohl00 omj00 onh01 ooh01 opl00 pae00 pne10 poe10 qaa00 qne10 qoe10 rne10 roe10 snj10 sol10\n",
 "ReefKnot" : "KnotMaker v1.0\nKnot Names=Reef Knot, Square Knot, ABOK #1402\nComments=\nBinary Signature=101101010010\nOvers Index=6:10\nCypher String= bdc01 cde01 cei01 cff01 cgf01 ch\x8501 dc\x8711 ddg01 deg01 df\x8511 di\x8601 eb\x8211 ede01 eee01 eg\x8611 eie01 fb\x8C11 fd\x8401 fe\x8C01 fg\x8411 fie01 gc\x8010 gf\x8110 gie01 hb\x8201 hd\x8611 he\x8211 hg\x8601 hie01 ib\x8C01 ide11 iee11 ig\x8401 iie01 jc\x8301 jdh01 jeh01 jf\x8D01 ji\x8401 kde10 kej11 kff01 kgf01 kh\x8D01 ldp11\n",
 "OH+Knot" : "KnotMaker v1.0\nKnot Names=Overhand Knot\nComments=adapted from OH+Knot.cyp\nBinary Signature=\nOvers Index=3:6\nCypher String= ebi fbj dci ech fcg gca ddk edg fdl eeo\n",
@@ -35,7 +36,7 @@ if (!this.KnotMaker) {
 "Bowline": "KnotMaker v1.2\nKnot Names=Bowline, ABOK #1010\nComments=Demonstrates the use of colors for highlighting different areas of a knot.\nBinary Signature=10010101100110\nOvers Index=7:10\nCypher String= bci30 bdk30 bei00 bff00 bgf10 bhf10 bik10 can00 cbf00 cch03 cdg30 ceg00 cfk00 cie10 dce30 ddj30 deh30 dfg03 dgf30 dhb30 die10 ecj30 edf30 eeh30 efg03 egf10 ehf10 eil10 fej00 ffl00\n",
 "CowHitch": "KnotMaker v1.2\nKnot Names=Cow Hitch, Lark's Head Hitch, Lanyard Hitch, ABOK #1673\nComments=\nBinary Signature=1001\nOvers Index=2:3\nCypher String= bbs01 bcw01 bdw01 bes01 cbs01 cdi01 ces01 cfk01 daw01 dbs01 ddj01 det01 dfg00 dgf01 dhb01 eaw01 ebs01 edi01 eet01 efg00 egf01 ehf01 eif01 ejo01 fbs01 fdj01 fes01 ffl01 gbs01 gcw01 gdw01 ges01\n",
 "OverhandKnot": "KnotMaker v1.2\nKnot Names=Overhand Knot, Thumb Knot, ABOK #519\nComments=\nBinary Signature=101010\nOvers Index=3:6\nCypher String= bdc00 cde01 dc\x8701 ddg00 de\x8500 ebu01 ed\x8401 ef\x8600 fc\x8000 ffe01 gbu01 gd\x8601 gf\x8400 hc\x8301 hdh00 he\x8D00 ide01 jdp00\n",
-"allImages" : "KnotMaker v1.2\nKnot Names=\nComments=\nBinary Signature=\nOvers Index=\nCypher String= aad00 abn00 acf00 aei00 ag\x8300 aih00 baa00 bbp00 bce00 bej00 bg\x8700 bk{00 bm\x9300 bos00 cab00 cbo00 cel00 cig00 dac00 dbm00 dek00 dg\x8400 dk|00 dm\x9400 dot00 ei\x8000 fc\x7F00 feu00 fg\x8C00 fk}00 fm\x9500 fo\x8800 gi\x8100 hc~00 hev00 hg\x8500 hk\x8E00 hm\x9600 ho\x8900 jey00 jg\x8D00 jk\x8F00 jm\x9700 kox00 lez00 lg\x8200 lk\x9000 lm\x9800 mow00 ng\x8600 nk\x9100 nm\x9900 pk\x9200 pm\x9A00\n",
+"allImages" : "KnotMaker v1.2\nKnot Names=\nComments=\nBinary Signature=\nOvers Index=\nCypher String= aad00 abn00 acf00 aei00 ag\x8300 aih00 baa00 bbp00 bce00 bej00 bg\x8700 bk{00 bm\x9300 bos00 cab00 cbo00 cel00 cig00 dac00 dbm00 dek00 dg\x8400 dk|00 dm\x9400 dot00 ei\x8000 fc\x7F00 feu00 fg\x8C00 fk}00 fm\x9500 fo\x8800 gi\x8100 hc~00 hev00 hg\x8500 hk\x8E00 hm\x9600 ho\x8900 jey00 jg\x8D00 jk\x8F00 jm\x9700 jow00 lez00 lg\x8200 lk\x9000 lm\x9800 lox00 ng\x8600 nk\x9100 nm\x9900 no\x8A00 pk\x9200 pm\x9A00 po\x8B00\n",
 
 "AdjustableGripHitch": "KnotMaker v1.0\nKnot Names=Adjustable Grip Hitch\nComments=\nBinary Signature=100110010101010011010101\nOvers Index=12:19\nCypher String= adm00 bde00 cci00 cdg00 cef00 cfk00 dcj00 ddh00 dek00 dfe00 eci00 edg00 eel00 efe00 fcj00 fdh00 fek00 ffe00 gci00 gdg00 gel00 gfe00 hcj00 hdh00 hek00 hfe00 ici00 idg00 iel00 ife00 jad00 jbf00 jch00 jdg00 jef00 jfg00 jgk00 kcj00 kdh00 kef00 kfh00 kgl00 lde00 lfe00 maw00 mbw00 mcw00 mdx00 mew00 mfw00 mgw00 mhw00 ndj00 nef00 nfl00\n",
 "AlpineButterflyAroundAPole": "KnotMaker v1.1\nKnot Names=Alpine Butterfly, Butterfly Loop, Butterfly Knot, Lineman's Loop, ABOK #1053\nComments=Shows how to tie the Alpine Butterfly around an object.\nBinary Signature=110011001010001000111011\nOvers Index=12:13\nCypher String= aem10 bee10 cee10 cfc00 dee10 dfe00 ec\x8700 edf00 eeh01 efh00 egk00 fb\x8200 fd\x8711 feh11 ffh10 fgh10 fhk10 gbe00 gcu11 ge\x8411 gfe00 gge00 ghe10 hbe00 hd\x8111 hfe00 hge00 hhe10 ibe00 icu11 ie\x8611 ife00 ige00 ihe10 jbe00 jd\x8311 jeg11 jfg01 jgg01 jhl10 kb\x8C00 kee10 kfj00 kgh00 khk00 lc\x8300 ldf00 leg10 lff00 lgg00 lhl00 maw00 mbw00 mcw00 mdw00 mex10 mfw00 mgw00 mhw00 miw00 nej10 nff10 ngl10\n",
@@ -49,7 +50,6 @@ if (!this.KnotMaker) {
 "CloveHitch": "KnotMaker v1.2\nKnot Names=Clove Hitch, ABOK #1178\nComments=\nBinary Signature=1001\nOvers Index=2:3\nCypher String= bds00 cci00 cds00 cek00 dcj00 ddt00 deg00 dff00 dgo00 eds00 ee\x8400 fd\x8800 gc\x8200 gds00 had00 hbf00 hcg00 hdt00 hek00 icj00 ids00 iel00 jds00\n",
 "ConstrictorKnot": "KnotMaker v1.2\nKnot Names=Constrictor Knot, ABOK #1189\nComments=\nBinary Signature=10100011\nOvers Index=4:5\nCypher String= bds00 cci00 cds00 cef00 cfk00 dad00 dbf00 dcg00 ddt00 dek00 dfe00 ecj00 edt00 eeg00 efg00 egf00 ehf00 eio00 fds00 fee00 ff\x8400 gds00 ge\x9100 hd\x8800 hee00 ic\x8200 ids00 iee00 jcj00 jds00 jel00 kds00\n",
 "CowHitch": "KnotMaker v1.0\nKnot Names=Cow Hitch, Lark's Head Hitch, Lanyard Hitch, ABOK #1673\nComments=\nBinary Signature=1001\nOvers Index=2:3\nCypher String= bbs01 bcw01 bdw01 bes01 cbs01 cdi01 ces01 cfk01 daw01 dbs01 ddj01 det01 dfg00 dgf01 dhb01 eaw01 ebs01 edi01 eet01 efg00 egf01 ehf01 eif01 ejo01 fbs01 fdj01 fes01 ffl01 gbs01 gcw01 gdw01 ges01\n",
-"DoubleDragon": "KnotMaker v1.1\nKnot Names=Double Dragon\nComments=The Double Dragon is similar to the Perfection Loop and the Tugboat Bowline.\nBinary Signature=110011001010010110010000100101111001110010110101\nOvers Index=24:29\nCypher String= acm00 ahm00 apm00 bai10 bbk10 bce00 bfi10 bgk10 bhe00 bpe00 cae10 cbe10 cce00 cfe10 cge10 che00 cpe00 dae10 dbe10 dce00 dfe10 dge10 dhe00 dpe00 eae10 ebe10 ece00 efe10 ege10 ehe00 epe00 fae10 fbe10 fce00 ffe10 fge10 fhe00 fpe00 gae10 gbe10 gce00 gfe10 gge10 ghe00 gni00 gof00 gpg00 gqk00 hae10 hbe10 hce00 hfe10 hge10 hhe00 hmi00 hng00 hok00 hpe00 hqe00 iae00 ibe00 ice00 ife00 ige00 ihe00 ime00 ine00 ioe00 ipe00 iqe00 jae00 jbe00 jce00 jfj00 jgg00 jhg00 jik00 jme00 jne10 joe10 jpe00 jqe00 kae00 kbe00 kce00 kfi00 kgh00 khh00 kil00 kli00 kmh00 kng10 kog10 kph00 kql00 lae00 lbe00 lce00 lfj00 lgg00 lhg00 lik00 llj00 lmg00 lng10 log10 lpg00 lqk00 mae00 mbe00 mce00 med00 mff00 mgh00 mhh00 mil00 mkd00 mlf00 mmh00 mng10 mog10 mph00 mql00 nae00 nbe00 nce00 nge00 nhe00 nme00 nne10 noe10 npe00 oae00 obj00 ocl00 ogj00 ohl00 omj00 onh01 ooh01 opl00 pae00 pne10 poe10 qaa00 qne10 qoe10 rne10 roe10 snj10 sol10\n",
 "DoubleKnottedBowline": "KnotMaker v1.1\nKnot Names=Double-Knotted Bowline, Double Bowline, Round Turn Bowline, ABOK #1013\nComments=\nBinary Signature=110001001101100011100110\nOvers Index=12:12\nCypher String= bci30 bdk30 bei00 bff00 bgf00 bhf00 bif00 bjf10 bkf10 blf10 bmk10 can00 cbf00 cch03 cdg30 ceg00 cff00 cgf00 chf00 cik00 cme10 dce30 dde30 dee00 dfi00 dgf00 dhk00 die00 dme10 ece30 edj30 eeh30 efh30 egf30 ehg03 eig03 ejf30 ekb30 eme10 fcj30 fdf30 feh30 ffh30 fgf30 fhg03 fig03 fjf10 fkf10 flf10 fml10 gej00 gfh00 ggf00 ghl00 gie00 hfj00 hgf00 hhf00 hil00\n",
 "DoubleSheetBend": "KnotMaker v1.2\nKnot Names=Double Sheet Bend, ABOK #1434\nComments=\nBinary Signature=110001001110100011100110\nOvers Index=12:12\nCypher String= bfi10 bgf10 bhf10 bif10 bjk10 cei10 cfh11 cgk10 cje10 dbn01 dcf00 ddf00 deh01 dfh01 dgg10 dhf00 dif00 djg10 dkk00 eee10 efe10 ege10 ehi10 eif10 ejh11 ekg01 elf10 emf10 eno10 fdd01 feh01 ffh01 fgg10 fhg10 fif00 fjg10 fkl00 gee10 gfj10 ggl10 ghe10 gje10 hej10 hff10 hgf10 hhl10 hja10\n",
 "FigureEightBend": "KnotMaker v1.2\nKnot Names=Figure-Eight Bend, Flemish Bend, ABOK #1411 \nComments=\nBinary Signature=11001100110011001100110011001100\nOvers Index=16:16\nCypher String= bdm01 cde01 dde01 dec11 ede01 eee11 fbi11 fcf11 fdg01 feg11 fff10 fgf10 fhk11 gbe11 gci01 gdg00 geg10 gff01 ggk01 ghe11 hbe11 hce01 hde01 hee11 hge01 hhe11 ibe11 icj01 idh00 ieh01 iff01 igg00 ihg10 iif01 ijk01 jbj11 jcf11 jdh10 jeh11 jff10 jgg01 jhg11 jik10 jje01 kde01 kee11 kge01 khe11 kie10 kje01 lde01 lej10 lff10 lgh10 lhh11 lil10 lje01 mdj01 mef01 mff01 mgh00 mhh01 mif01 mjl01 nge01 nhe11 oga01 ohe11 phe11 qhp11\n",
@@ -140,12 +140,102 @@ var tiles = {
 "\x98" : "jsKnotMaker_files/tile.x98.50x50.gif",
 "\x99" : "jsKnotMaker_files/tile.x99.50x50.gif",
 "\x9A" : "jsKnotMaker_files/tile.x9A.50x50.gif",
+"\x8A": "jsKnotMaker_files/tile.x8A.50x50.gif",
+"\x8B": "jsKnotMaker_files/tile.x8B.50x50.gif",
     };
+
+var tileGroupings2 = [
+    ["Working End", ["d","a","b","c" ]],
+    ["Standing Part", ["n","p","o","m" ]],
+    ["Straight", ["f","e","\x7F","~" ]],
+    ["Curve", ["i","j","l","k","u","v","y","z" ]],
+    ["Elbow", ["\x83","\x87","\x84","\x8C","\x85","\x8D","\x82","\x86" ]],
+    ["Straight Crossings", ["h","g","\x80","\x81" ]],
+    ["Angle Crossings", ["{","|","}","\x8E","\x8F","\x90","\x91","\x92" ]],
+    ["Elbow Crossings", ["\x96","\x97","\x98","\x99","\x9A","\x93","\x94","\x95" ]],
+    ["Spar/Pole", ["s","t","\x88","\x89","w","x","\x8A","\x8B" ]],
+];
+
+var predefinedKnotsGroupings = [
+    ["!!", [
+    "JanusBowline",
+    "AdjustableGripHitch",
+    "DoubleDragon",
+    "ReefKnot",
+    "OH+Knot",
+    "diyOverhand",
+    "Bowline",
+    "CowHitch",
+    "OverhandKnot",
+    ]],
+    ["??", [
+    "allImages",
+    "impossible",
+    ]],
+    ["Bend", [
+    "AlpineButterflyBend",
+    "AlpineButterflyAroundAPole",
+    "AshleyBend",
+    "CarrickBend",
+    "DoubleSheetBend",
+    "FigureEightBend",
+    "FishermansBend",
+    "HuntersBend",
+    "OverhandBend",
+    "SheetBend",
+    "SlidingSheetBend",
+    "ZeppelinBend",
+    ]],
+    ["Hitch", [
+    "AdjustableGripHitch",
+    "BackHandHitch",
+    "BuntlineHitch",
+    "CloveHitch",
+    "CowHitch",
+    "HighwaymansHitch",
+    "RollingHitch",
+    "RoundTurnAndTwoHalfHitches",
+    "SailorsGrippingHitch",
+    "TautlineHitch",
+    "TwoHalfHitches",
+    ]],
+    ["Loop",[
+    "ArtilleryLoop",
+    "FigureEightLoop",
+    "InlineFigureEightLoop",
+    "OverhandLoop",
+    "PerfectionLoop",
+    ]],
+    ["Bowline",[
+    "Bowline",
+    "DoubleKnottedBowline",
+    "LeftHandBowline",
+    "TugboatBowlineA",
+    "TugboatBowlineB",
+    "WaterBowline",
+    ]],
+    ["Knot",[
+    "ConstrictorKnot",
+    "FishermansKnot",
+    "OverhandKnotVariations",
+    "ReefKnot",
+    "RingKnot",
+    "TarbuckKnot",
+    ]],
+];
     function shallowReverse(o){ var n = {}; for(var i in o){ n[o[i]]=i; } return n }
     var tilesReverse = shallowReverse(tiles);
     KnotMaker.currentTile = 'a';//default
+    KnotMaker.currentTileStatus = null;//default
     KnotMaker.setTile = function(img){
         KnotMaker.currentTile = tilesReverse[img];
+
+if(KnotMaker.currentTileStatus === null){
+    KnotMaker.currentTileStatus = document.getElementById("KnotMaker-currentTileStatus");
+}
+KnotMaker.currentTileStatus.src =  tiles[KnotMaker.currentTile];
+KnotMaker.currentTileStatus.title = "Current tile " + KnotMaker.currentTile + " " +  tiles[KnotMaker.currentTile];
+
 //~         alert(img + ' ' + KnotMaker.currentTile);
         return;
     };
@@ -167,6 +257,14 @@ var charCodeToalpha = { "100" : "d","101" : "e","102" : "f","103" : "g","104" : 
 
     KnotMaker.kmParse = function (s){
         var o = {};
+if( /^{/.test(s) ){
+    try {
+        var jo = JSON.parse(s);
+        alert(jo);
+    } catch(e){
+        alert(e + "\n" + s);
+    }
+} else {
         s = s.split("\n");
         for(var i in s){
             if( s[i].match(/^(KnotMaker)\s+(\S+)$/        ) ){ o[RegExp.$1] = RegExp.$2             }
@@ -194,6 +292,7 @@ var charCodeToalpha = { "100" : "d","101" : "e","102" : "f","103" : "g","104" : 
                 }
             }
         }
+}
         
         return o;
     };
@@ -252,6 +351,8 @@ var charCodeToalpha = { "100" : "d","101" : "e","102" : "f","103" : "g","104" : 
         }
 
         out += KnotMaker.drawToolBar2();
+        out += KnotMaker.drawToolBar3();
+        out+='<a href="#" onclick="alert(\'jsKnotMaker v\'+KnotMaker.VERSION);return false;">about</a>';
         out+="</div>\n";
         return out;
     };
@@ -259,7 +360,7 @@ var charCodeToalpha = { "100" : "d","101" : "e","102" : "f","103" : "g","104" : 
 
     KnotMaker.drawToolBar3 = function (){
         var out = "";
-        out+= 'predefined(';
+        out+= '(';
 
 //~         var ix = 0;
 //~     for(var i in predefinedKnots){
@@ -277,6 +378,7 @@ out+= '<option>'+i+'</option> ';
         out+= '</select>';
         out+= ')';
         out+= "\n";
+        out+= '<img id="KnotMaker-currentTileStatus" src="'+tiles[KnotMaker.currentTile]+'"/>';
         return out;
     };
 
@@ -288,7 +390,6 @@ out+= '<option>'+i+'</option> ';
         out+= '<a href="javascript:" onclick="KnotMaker.SaveWriteKb(this)">write</a>)';
         out+= ' &nbsp; &nbsp; ';
         out+= '<a href="javascript:" onclick="KnotMaker.clearAllGrid(this)">CLEAR ALL</a>'+"\n";
-        out+= KnotMaker.drawToolBar3();
         out+= "\n";
         return out;
     };
@@ -316,7 +417,7 @@ out+= '<option>'+i+'</option> ';
 //~         var cypher = prompt("Cypher String="," abi00 acj00 bac00 bbg00 bch00 bdj00 cbk00 ccg00 cdl00 dco00");
 var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00 ccg00 dcl00 cdo00");
         if(cypher){
-            if( ! (/^Cypher String=/).test(cypher) ){
+            if( !(/^{/.test(cypher)) && ! (/^Cypher String=/).test(cypher) ){
                 cypher = "Cypher String=" + cypher;
             }
             var km = KnotMaker.kmParse(cypher);
@@ -330,7 +431,7 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         return;
     };
     KnotMaker.LoadPredefined = function(t,cs){
-        t.blur();
+        try { t.blur(); } catch(e){ 1; }
         var table = KnotMaker.findTable(t);
         if( predefinedKnots[cs] ){
             if( typeof(predefinedKnots[cs])==="string"){
@@ -398,7 +499,7 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         alert(out);
 
     if(1){
-        var ret = prompt("").split(" ");
+        var ret = prompt(" ").split(" ");
         var out = "\n";
         for(var i in ret ){
             if(ret[i].match(/^(..)(.*?)(\d\d)?$/)){
@@ -420,7 +521,124 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         return out;
     };
 
-    document.write(KnotMaker.drawIt());
+    KnotMaker.drawTileSidebar = function(){
+//~ //http://billauer.co.il/blog/2009/04/css-div-layout-main-pitfalls-cascaded-style-sheets/
+//~ var out = '<div style="border:1px solid green;position:absolute:x:0:y:0;overflow-x:scroll;z-index:1;">';
+//~ var out = '<div style="border:1px solid green;">';
+var out = '<div style="border-left:1px dashed;">';
+//~ var out = '<layer style="border:1px solid green;position:absolute:x:0:y:0;overflow-x:scroll;zorder:1;">';
+out+='<div class="dropRight">';
+out += "<ul>\n";
+for(var i in tileGroupings2 ){
+    out += '<li>';
+    out += '<a href="#">'+tileGroupings2[i][0]+'</a>';
+    out += "<ul >\n";
+
+    for(var ix in tileGroupings2[i][1] ){
+        out += '<li>';
+        out += '<a border=2 href="javascript:" onclick="KnotMaker.setTile(\''+tiles[tileGroupings2[i][1][ix]] +'\')">';
+        out += '<img border=1 hspace=0 vspace=0 src="'+tiles[tileGroupings2[i][1][ix]]+'"';
+        out+=' title=" '+tileGroupings2[i][1][ix]+' '+tiles[tileGroupings2[i][1][ix]]+'"/>';
+        out+='</a>';
+        out += "</li>\n";
+    }
+    out += "</ul>\n";
+    out += "</li>\n";
+}
+out += "</ul>\n";
+out += "</div>\n";
+out += "</div>\n";
+//~ out += "</layer>\n";
+return out;
+    };
+
+
+    KnotMaker.drawPredefined = function (){
+        var out = "\n";
+//~ out+='<hr style="width:60px;" align="left" /><div class="dropRight">';
+
+
+
+//~ out+='<div class="dropRight">predefined<br/>';
+//~ out+='<div class="dropRight"><ul><li>predefined';
+//~ nowork out+='<div class="dropDown"><ul><li>predefined<div class="dropRight">';
+//~ out+='predefined<br/><div style="visibility:hidden;" class="visibleInlineBlock">';
+out+='predefined<br/><div class="dropRight">';
+out+='<div class="dropRight">';
+out += "<ul>\n";
+for(var i in predefinedKnotsGroupings ){
+    out += '<li>';
+    out += '&nbsp; <a href="#">'+predefinedKnotsGroupings[i][0]+'</a>';
+    out += "<ul >\n";
+
+    for(var ix in predefinedKnotsGroupings[i][1] ){
+        out+= '<li>';
+        out+= '&nbsp; <a href="javascript:KnotMaker.LoadPredefined(document,\''+predefinedKnotsGroupings[i][1][ix]+'\');"> ';
+        out+= predefinedKnotsGroupings[i][1][ix];
+        out+= '</a>';
+        out += "</li>\n";
+    }
+    out += "</ul>\n";
+    out += "</li>\n";
+}
+out += "</ul>\n";
+//~ out += "</div></li></ul>\n";
+//~ out += "</div>\n";
+//~ out+='<ul>';
+//~ out+='<li><a href="#">predefined</a><ul>';
+//~     for(var i in predefinedKnots){
+//~         out+='<li>';
+//~         out+='<a href="javascript:KnotMaker.LoadPredefined(document,\''+i+'\');"> ';
+//~         out+= i;
+//~         out+= '</a> &nbsp;';
+//~         out+= '</li> ';
+//~     }
+//~ out+= '</ul>';
+
+out+= '</div>';
+out+= '</div>';
+out+= "\n";
+return out;
+    };
+
+    KnotMaker.drawItWithTileSidebar= function(){
+        var out = '<div class="KnotMaker" style="width:100%; height:100%">'+"\n";
+
+//~         out += '<div style="overflow:scroll; float:left; width: 100; overflow: float">';
+//~         out+= '<div style="position:absolute; left:0px; top:0px; z-index:3;">';
+//~ http://www.w3.org/Style/Examples/007/
+//~ http://www.w3.org/Style/Examples/007/menus
+//~ http://www.w3.org/Style/Examples/007/alternatives
+//~ http://www.w3.org/Style/Examples/007/evenodd
+//~ http://www.alistapart.com/articles/practicalcss/
+        out+= '<div style="position:fixed; left:0px; top:0px; z-index:3;">';
+        out+= '<div style="border:1px dashed;width:110px;background:#eeeeee;text-align:center;">current tile<br/>';
+        out+= '<img id="KnotMaker-currentTileStatus" vspace=0 hspace=0 src="'+tiles[KnotMaker.currentTile]+'"/>';
+        out+= '</div>';
+        out+= '<hr style="width:60px;" align="left" />';
+        out+= "\n";
+//~         out += '<div style="height:100%; width:10; flow:left; overflow:scroll;z-index:1;">';
+out += '<div width="100px" style="width:100px;">';//100px
+out += KnotMaker.drawToolBar2();
+out += "</div>\n";
+
+        out+='<hr style="width:60px;" align="left" />';
+out += KnotMaker.drawTileSidebar();
+
+        out+='<hr style="width:60px;" align="left" />';
+        out += KnotMaker.drawPredefined();
+        out += "</div>\n";
+    out += '<div id="right" style="padding-left:100px;">';//100px
+    out += KnotMaker.drawEditGrid(20,20);
+    out += "</div>\n";
+        out += "</div></div>\n";
+        return out;
+    };
+
+//~     document.write(KnotMaker.drawIt());
+    document.write(KnotMaker.drawItWithTileSidebar());
+    document.title = "jsKnotMaker v"+KnotMaker.VERSION;
+    return;
 }());
 
 //!-->

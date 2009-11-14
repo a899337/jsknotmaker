@@ -1,0 +1,46 @@
+
+/*
+.dropDown ul li:hover , .dropDown ul li a:hover {
+    background: #dddddd;
+}
+
+*/
+
+.dropDown ul {
+    list-style-type: none;
+    display: inline-block;
+}
+
+
+.dropDown {
+/*	border: 1px solid red; */
+    display:block;
+	font-family:"Times New Roman",Georgia,Serif;
+}
+
+.dropDown ul, .dropDown li {
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+}
+/* no more floating, regular list behaviour (sub list items drop down) */
+.dropDown ul ul li {
+    clear:both;
+}
+
+/* sub lists hidden by default  */
+.dropDown ul ul {
+    visibility: hidden;
+    display: none;
+    margin:4px;
+}
+
+/* show the sub lists (children) */
+.dropDown ul li:hover >ul, .visibleBlock *:hover > *{
+    visibility: visible;
+/*     background:yellow; */
+    display: block;
+}
+
+.dropDown ul li {
+    float: left;
+}
