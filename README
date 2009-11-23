@@ -1,4 +1,9 @@
-http://a899337.github.com/jsknotmaker/
+﻿http://a899337.github.com/jsknotmaker/
+
+All the text files (html/js/css) are encoded
+UTF-8 Unicode (with BOM)
+
+------
 
 jsKnotMaker is based on and inspired by
 

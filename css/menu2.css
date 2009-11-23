@@ -1,0 +1,66 @@
+﻿
+
+.menu2RightDown {
+	/*outline: 1px dashed green;*/
+	display: block;
+}
+
+.menu2DropRight    > li , .menu2DropRightFirst    > li     {
+	float: left;
+	position: relative;
+}
+
+
+
+.menu2DropRightFirst, .menu2DropRight, .menu2DropDown, .menu2,
+.menu2DropRightFirst >li, .menu2DropRight >li, .menu2DropDown >li, .menu2 >li
+{
+	list-style-type: none;
+	margin: 0px 0px 0px 0px;
+	padding-left: 0.5em; /* don't pad with margin !!! mouse loses focus */
+}
+
+
+.menu2Trigger { cursor: pointer; cursor: hand; }
+.menu2Trigger    .menu2 {    visibility: hidden; display: none;}
+/* not marker, not run-in, not inline-block,
+yes inline, yes block, yes inline-table , yes table, yes list-item
+*/
+.menu2Trigger:hover > .menu2 { visibility: visible; display: list-item;    }
+
+
+/* TODO: css selector help
+ul.menu2DropRightFirst li > ul
+
+*/
+
+.menu2RightDown    li, .menu2DropRightFirst, .menu2DropRight, .menu2DropDown, .menu2, .menu2DropRight >li, .menu2DropDown >li    {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.menu2Li    a { background: white; padding:.3em;}
+.menu2Li    , .menu2Li > li {
+/*
+	background: white;
+outline: 1px solid black;
+*/
+
+	border-left: 1px solid black;
+	white-space: nowrap;
+}
+
+.menu2DropRight { width: 20em; height: 2em;}
+.menu2Li { width:34em; /*width:100% no work */}
+
+/* wtf? .menu2RightDown ul ul , .menu2RightDown ul ul ul { background-color: transparent;} */
+
+.menu2First {
+	position:absolute;
+	z-index:+1;
+/*
+	width: 30em;
+	height: 30em;
+*/ 
+	outline: 1px solid red;
+}
