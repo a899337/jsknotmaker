@@ -486,7 +486,7 @@ for(var i in KnotMaker.predefinedKnotsList ){
 
     for(var ix in KnotMaker.predefinedKnotsList[i][1] ){
         out+= '<li>';
-        out+= '&nbsp; <a href="javascript:KnotMaker.LoadPredefined(document,\''+KnotMaker.predefinedKnotsList[i][1][ix]+'\');"> ';
+        out+= '&nbsp; <a href="javascript:" onclick="KnotMaker.LoadPredefined(document,\''+KnotMaker.predefinedKnotsList[i][1][ix]+'\');"> ';
         out+= KnotMaker.predefinedKnotsList[i][1][ix];
         out+= '</a>';
         out += "</li>\n";
@@ -570,18 +570,18 @@ out+= "<ul class=\"menu2DropDown menu2RightDown \" style=\"margin:0;padding:0\">
 //~ out+= "<li class=\"menu2Trigger\"><a href=\"#\">File</a>\n";
 out+= "<li class=\"menu2Trigger\"><a >File</a>\n";
     out+= "<ul class=\"menu2 menu2DropDown menu2Li\" style=\"position:absolute;display:inline;\">\n";
-        out+= '<li><a href="javascript:KnotMaker.LoadPromptKb(this)">load</a>'+"</li>\n";
+        out+= '<li><a href="javascript:" onclick="KnotMaker.LoadPromptKb(this)">load</a>'+"</li>\n";
 //~         out+= '<li  class=\"menu2Trigger\"><a href=\"#\">SAVE</a>';
         out+= '<li  class=\"menu2Trigger\"><a >SAVE</a>';
         out+= "<ul class=\"menu2 menu2DropRight menu2Li\" style=\"position:absolute;display:inline;\">\n";
-        out+= '<li><a href="javascript:KnotMaker.SavePromptKb(this)">PromptKb</a></li> ';
-        out+= '<li><a href="javascript:KnotMaker.SavePromptKbJSON(this)">PromptJSON</a></li> ';
-        out+= '<li><a href="javascript:KnotMaker.SaveWriteKm(this)">WriteKm</a></li> ';
-        out+= '<li><a href="javascript:KnotMaker.SaveWriteKmJSON(this)">WriteJSON</a></li> ';
+        out+= '<li><a href="javascript:" onclick="KnotMaker.SavePromptKb(this)">PromptKb</a></li> ';
+        out+= '<li><a href="javascript:" onclick="KnotMaker.SavePromptKbJSON(this)">PromptJSON</a></li> ';
+        out+= '<li><a href="javascript:" onclick="KnotMaker.SaveWriteKm(this)">WriteKm</a></li> ';
+        out+= '<li><a href="javascript:" onclick="KnotMaker.SaveWriteKmJSON(this)">WriteJSON</a></li> ';
         out+= "</ul>";
         out+= '</li>';
-        out+= '<li>'+'<a href="javascript:KnotMaker.clearAllGrid(this)">CLEAR ALL</a>'+"</li>\n";
-        out+= '<li>'+ '<a href="javascript:KnotMaker.about()">about</a>' +"</li>\n";
+        out+= '<li>'+'<a href="javascript:" onclick="KnotMaker.clearAllGrid(this)">CLEAR ALL</a>'+"</li>\n";
+        out+= '<li>'+ '<a href="javascript:" onclick="KnotMaker.about()">about</a>' +"</li>\n";
         out+= "\n";
     out+= "</li>\n";
     out+= "</ul>\n";
@@ -600,7 +600,7 @@ for(var i in KnotMaker.ToolPanelList ){
     for(var ix in KnotMaker.ToolPanelList[i][1] ){
         var tileidtip = "'"+KnotMaker.ToolPanelList[i][1][ix]+'\' '+'('+ KnotMaker.ToolPanelList[i][1][ix].charCodeAt(0) +') ' ;
         out += '<li>';
-        out += '<a border=2 href="javascript:KnotMaker.setTile(\''+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]] +'\')">';
+        out += '<a border=2 href="javascript:" onclick="KnotMaker.setTile(\''+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]] +'\')">';
         out += tileidtip + '<br/>';
         out += '<img border=1 hspace=0 vspace=0 src="'+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]]+'"';
         out+=' title="'+tileidtip+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]]+'"/>';
@@ -626,7 +626,7 @@ for(var i in KnotMaker.predefinedKnotsList ){
 
     for(var ix in KnotMaker.predefinedKnotsList[i][1] ){
         out+= '<li>';
-        out+= '<a href="javascript:KnotMaker.LoadPredefined(document,\''+KnotMaker.predefinedKnotsList[i][1][ix]+'\');"> ';
+        out+= '<a href="javascript:" onclick="KnotMaker.LoadPredefined(document,\''+KnotMaker.predefinedKnotsList[i][1][ix]+'\');"> ';
         out+= KnotMaker.predefinedKnotsList[i][1][ix];
         out+= '</a>';
         out += "</li>\n";
