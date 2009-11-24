@@ -21,7 +21,7 @@
 }
 
 
-.menu2Trigger { cursor: pointer; cursor: hand; }
+.menu2Trigger { cursor: pointer; }
 .menu2Trigger    .menu2 {    visibility: hidden; display: none;}
 /* not marker, not run-in, not inline-block,
 yes inline, yes block, yes inline-table , yes table, yes list-item
