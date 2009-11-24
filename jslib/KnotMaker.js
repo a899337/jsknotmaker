@@ -9,7 +9,7 @@ if (!this.KnotMaker) {
 }
 (function () {
 
-KnotMaker.VERSION  = "2009-11-17-01:19:35";
+KnotMaker.VERSION  = "2009-11-24-05:51:53";
 
 //~ http://ejohn.org/blog/__file__-in-javascript/
 (function(){

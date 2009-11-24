@@ -1,5 +1,6 @@
 ﻿//~ jslib/KnotMaker.drawers.js
 //~ defines
+//~     KnotMaker.drawItIn()
 //~     KnotMaker.drawIt()
 //~     KnotMaker.drawItWithTileSidebar()
 //~     KnotMaker.drawItWithTileSidebar2()
@@ -11,24 +12,36 @@
 if (!this.KnotMaker) {
     this.KnotMaker = {};
 }
+
+
 (function () {
+    if( !KnotMaker.ids ){
+        KnotMaker.ids = {}
+    }
 
 KnotMaker.currentTile = 'a';//default
-KnotMaker.currentTileStatusImg = null;//default
-KnotMaker.currentTileStatusDiv = null;//default
+KnotMaker.ids.currentTileStatusImg = null;//default
+KnotMaker.ids.currentTileStatusDiv = null;//default
+KnotMaker.ids.drawEditGrid = null;
+KnotMaker.ids.Popup = null;
+KnotMaker.ids.PopupText = null;
+KnotMaker.ids.ToolPanelList = null;
+KnotMaker.ids.predefinedKnots = null;
+
+
 KnotMaker.setTile = function(img){
     KnotMaker.currentTile = KnotMaker.tilesReverse[img];
 
-    if(KnotMaker.currentTileStatusImg === null){
-        KnotMaker.currentTileStatusImg = document.getElementById("KnotMaker-currentTileStatusImg");
-        KnotMaker.currentTileStatusDiv = document.getElementById("KnotMaker-currentTileStatusDiv");
+    if(KnotMaker.ids.currentTileStatusImg === null){
+        KnotMaker.ids.currentTileStatusImg = document.getElementById("KnotMaker-currentTileStatusImg");
+        KnotMaker.ids.currentTileStatusDiv = document.getElementById("KnotMaker-currentTileStatusDiv");
     }
 
-    KnotMaker.currentTileStatusImg.src =  KnotMaker.tiles[KnotMaker.currentTile];
+    KnotMaker.ids.currentTileStatusImg.src =  KnotMaker.tiles[KnotMaker.currentTile];
     var tileidtip = "'"+KnotMaker.currentTile+'\' '+'('+ KnotMaker.currentTile.charCodeAt(0) +') ' ;
-    var tiletitle = "Current tile " + tileidtip +  KnotMaker.currentTileStatusImg.src;
-    KnotMaker.currentTileStatusImg.title = tiletitle.entityify();
-    KnotMaker.currentTileStatusDiv.innerHTML = tileidtip.entityify();
+    var tiletitle = "Current tile " + tileidtip +  KnotMaker.ids.currentTileStatusImg.src;
+    KnotMaker.ids.currentTileStatusImg.title = tiletitle.entityify();
+    KnotMaker.ids.currentTileStatusDiv.innerHTML = tileidtip.entityify();
     return;
 };
 
@@ -63,6 +76,7 @@ if( /^{/.test(s) ){
         for(var ix in { 
             "KnotMaker" : "",
             "jsKnotMaker" : "",
+            "Knot Names" : "",
             "Comments" : "",
             "Binary Signature" : "",
             "Overs Index" : "",
@@ -135,7 +149,7 @@ for( var tix in jox ){
             h =  max[0] > h ?  max[0] : h;
         } else { cs = {}; }
 
-        var out = '<table  class="drawEditGrid" bgcolor="#dddddd" border=0 cols="'+w+'" rows="'+h+'"> <tbody>';
+        var out = '<table  id="KnotMaker-drawEditGrid" class="drawEditGrid" bgcolor="#dddddd" border=0 cols="'+w+'" rows="'+h+'"> <tbody>';
         for (var irow = 0; irow <= w; irow++ ){
             out += "<tr>\n";
             for (var icol = 0; icol <= h; icol++ ){
@@ -260,6 +274,34 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         }
         return;
     };
+
+
+    KnotMaker.LoadPrompt = function(t){
+        var table = KnotMaker.findTable(t);
+        var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00 ccg00 dcl00 cdo00");
+        if(cypher){
+            if( !(/^{/.test(cypher)) && ! (/^Cypher String=/).test(cypher) ){
+                cypher = "Cypher String=" + cypher;
+            }
+            var km = KnotMaker.kmParse(cypher);
+            table.parentNode.innerHTML = KnotMaker.drawEditGrid2(20,20,km["Cypher String"]);
+        }
+        return;
+    };
+
+    KnotMaker.LoadPredefined2 = function(t,cs){
+        try { t.blur(); } catch(e){ 1; }
+        var table = KnotMaker.findTable(t);
+        if( KnotMaker.predefinedKnots[cs] ){
+            if( typeof(KnotMaker.predefinedKnots[cs])==="string"){
+                KnotMaker.predefinedKnots[cs]= KnotMaker.kmParse(KnotMaker.predefinedKnots[cs]);
+            }
+//~ KnotMaker.alert(JSON.stringify(KnotMaker.predefinedKnots[cs],null,'    '));
+            table.parentNode.innerHTML = KnotMaker.drawEditGrid2(20,20, KnotMaker.predefinedKnots[cs]["Cypher String"]);
+        }
+        return;
+    };
+
     KnotMaker.LoadPredefined = function(t,cs){
         try { t.blur(); } catch(e){ 1; }
         var table = KnotMaker.findTable(t);
@@ -272,6 +314,8 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         }
         return;
     };
+
+
     KnotMaker.clearAllGrid = function(t){
         var table = KnotMaker.findTable(t);
 //~ table.rows.length
@@ -280,6 +324,15 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         table.parentNode.innerHTML = out;
         return;
     };
+
+
+    KnotMaker.clearAllGrid2 = function(t){
+        var table = KnotMaker.findTable(t);
+        var out = KnotMaker.drawEditGrid2(table.getAttribute("cols"), table.getAttribute("rows"));
+        table.parentNode.innerHTML = out;
+        return;
+    };
+
     KnotMaker.windowWrite = function(s){
         if(0){
             var zw=open();
@@ -288,21 +341,21 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
             z.close();
             zw.focus();
         } else {
-            if(!( KnotMaker.hasOwnProperty('Popup') && KnotMaker.Popup ) ){
-                KnotMaker.Popup = document.getElementById('KnotMaker-Popup');
-                KnotMaker.PopupText = document.getElementById('KnotMaker-PopupText');
+            if(!( KnotMaker.hasOwnProperty('Popup') && KnotMaker.ids.Popup ) ){
+                KnotMaker.ids.Popup = document.getElementById('KnotMaker-Popup');
+                KnotMaker.ids.PopupText = document.getElementById('KnotMaker-PopupText');
             }
-            KnotMaker.PopupText.innerHTML = s.entityify();
-            KnotMaker.Popup.style.display= "block";
-            KnotMaker.Popup.style.visibility= "visible";
-            KnotMaker.PopupText.select(); // select works more reliably after visible
+            KnotMaker.ids.PopupText.innerHTML = s.entityify();
+            KnotMaker.ids.Popup.style.display= "block";
+            KnotMaker.ids.Popup.style.visibility= "visible";
+            KnotMaker.ids.PopupText.select(); // select works more reliably after visible
         }
         return;
     }
     KnotMaker.ClosePopup = function(t){
-//~         KnotMaker.Popup.innerHTML = "";
-        KnotMaker.Popup.style.display= "none";
-        KnotMaker.Popup.style.visibility= "hidden";
+//~         KnotMaker.ids.Popup.innerHTML = "";
+        KnotMaker.ids.Popup.style.display= "none";
+        KnotMaker.ids.Popup.style.visibility= "hidden";
         return;
     }
     KnotMaker.SaveWriteKm = function (t) {
@@ -328,6 +381,11 @@ var cypher = prompt("Cypher String="," bai00 caj00 abc00 bbg00 cbh00 dbj00 bck00
         return out;
     };
     KnotMaker.findTable = function(t){
+        if( !KnotMaker.ids.drawEditGrid || (KnotMaker.ids.drawEditGrid.parentNode == null)){
+            KnotMaker.ids.drawEditGrid = document.getElementById("KnotMaker-drawEditGrid");
+        }
+        return KnotMaker.ids.drawEditGrid;
+        // this was dumb
         var target = null;
         for(var i in [ 1,2,3,4,5, 6, 7, 8, 9, 10 ]){
             var tables = t.getElementsByTagName('table');
@@ -347,6 +405,7 @@ KnotMaker.SavePromptKbJSON = function(t){ KnotMaker.alert(JSON.stringify( KnotMa
 KnotMaker.GenKbJSON = function(t){
     var KbJSON = {
         "jsKnotMaker" : KnotMaker.VERSION,
+        "Knot Names" : "",
         "Comments" : "",
         "Binary Signature" : "",
         "Overs Index" : "",
@@ -551,7 +610,6 @@ out += KnotMaker.drawTileSidebar();
     };
 
 
-
     KnotMaker.drawItWithTileSidebar2= function(){
 var out = '<div class="KnotMaker" style="width:100%; height:100%">'+"\n";
 out+= '<div id="KnotMaker-Popup" style="background:white;border:5px;position:absolute; left:120px; top:20px; z-index:3; display: none;"><button style="width:100%" onclick="KnotMaker.ClosePopup(this)">Close</button><br/><form><textarea style="width:400px; height:200px;overflow:scroll;" id="KnotMaker-PopupText"></textarea></form></div>'+"\n";
@@ -648,7 +706,255 @@ out+= "</div>\n";
         return out;
     };
 
+    KnotMaker.drawItWithTileSidebar3= function(){
+var out = '<div class="KnotMaker" style="width:100%; height:100%">'+"\n";
+out+= '<div id="KnotMaker-Popup" style="background:white;border:5px;position:absolute; left:120px; top:20px; z-index:3; display: none;"><button style="width:100%" onclick="KnotMaker.ClosePopup(this)">Close</button><br/><form><textarea style="width:400px; height:200px;overflow:scroll;" id="KnotMaker-PopupText"></textarea></form></div>'+"\n";
+out+= '<div style="position:fixed; left:0px; top:0px; z-index:3;">';
+out+= '<div style="border:1px dashed;width:110px;background:#eeeeee;text-align:center;">current tile<br/>';
+out+= '<img id="KnotMaker-currentTileStatusImg" vspace=0 hspace=0 src="'+KnotMaker.tiles[KnotMaker.currentTile]+'"/>';
+out+= '<div id="KnotMaker-currentTileStatusDiv">\'a\' (97) </div>';
+out+= '</div>';
+out+= "\n";
+
+
+
+out+= "<div class=\"menu2RightDown\" style=\"margin:0;padding:0\">\n";
+out+= "<ul class=\"menu2DropDown menu2RightDown \" style=\"margin:0;padding:0\">\n";
+//~ out+= KnotMaker.drawToolBar2();
+//~ out+= "<li class=\"menu2Trigger\"><a href=\"#\">File</a>\n";
+out+= "<li class=\"menu2Trigger\"><a >File</a>\n";
+    out+= "<ul class=\"menu2 menu2DropDown menu2Li\" style=\"position:absolute;display:inline;\">\n";
+        out+= '<li><a href="#" onclick="KnotMaker.LoadPrompt(this);return false;">load</a>'+"</li>\n";
+//~         out+= '<li  class=\"menu2Trigger\"><a href=\"#\">SAVE</a>';
+        out+= '<li  class=\"menu2Trigger\"><a >SAVE</a>';
+        out+= "<ul class=\"menu2 menu2DropRight menu2Li\" style=\"position:absolute;display:inline;\">\n";
+        out+= '<li><a href="#" onclick="KnotMaker.SavePromptKb(this);return false;">PromptKb</a></li> ';
+        out+= '<li><a href="#" onclick="KnotMaker.SavePromptKbJSON(this);return false;">PromptJSON</a></li> ';
+        out+= '<li><a href="#" onclick="KnotMaker.SaveWriteKm(this);return false;">WriteKm</a></li> ';
+        out+= '<li><a href="#" onclick="KnotMaker.SaveWriteKmJSON(this);return false;">WriteJSON</a></li> ';
+        out+= "</ul>";
+        out+= '</li>';
+        out+= "<li><a>------</a></li>\n";
+        out+= '<li>'+'<a href="#" onclick="KnotMaker.clearAllGrid2(this);return false;">CLEAR ALL</a>'+"</li>\n";
+        out+= "<li><a>------</a></li>\n";
+
+                //out+= KnotMaker.drawPredefined();
+                //~     out+= "<li class=\"menu2Trigger\">\n<a href=\"#\">Predefined</a>\n";
+                    out+= "<li class=\"menu2Trigger\" >\n<a >PREDEFINED</a>\n";
+                    out+= "<ul id=\"KnotMaker-predefinedKnots\" class=\"menu2 menu2DropDown menu2Li\" style=\"position:absolute;display:inline;\">\n";
+                for(var i in KnotMaker.predefinedKnotsList ){
+                //~     out+= "<li class=\"menu2Trigger\">\n<a href=\"#\">";
+                    out+= "<li class=\"menu2Trigger\">\n<a >";
+                    out += KnotMaker.predefinedKnotsList[i][0]+"</a>\n";
+                    out+="<ul class=\"menu2 menu2DropRight menu2Li\" style=\"position:absolute;display:inline;\">\n";
+
+                    for(var ix in KnotMaker.predefinedKnotsList[i][1] ){
+                        out+= '<li>';
+//~                         out+= '<a href="javascript:" NOTonclick="KnotMaker.LoadPredefined(document,\''+KnotMaker.predefinedKnotsList[i][1][ix]+'\');">';
+                        out+= '<a>';
+                        out+= KnotMaker.predefinedKnotsList[i][1][ix];
+                        out+= '</a>';
+                        out += "</li>\n";
+                    }
+                    out += "</ul>\n";
+                    out += "</li>\n";
+                }
+                out += "</ul>\n";
+
+        out+= "<li><a>------</a></li>\n";
+        out+= '<li>'+ '<a href="#" onclick="KnotMaker.about();return false;">about</a>' +"</li>\n";
+    // end of file  menu
+
+    out+= "</li>\n";
+    out+= "</ul>\n";
+out+= "</li>\n";
+
+//~ out+= KnotMaker.drawTileSidebar();
+//~     out+= "<li class=\"menu2Trigger\">\n<a href=\"#\">Tool panel</a>\n";
+//~     out+= "<li class=\"menu2Trigger\">\n<a >Tool panel</a>\n";
+//~     out+= "<ul class=\"menu2 menu2DropDown menu2Li\" style=\"position:absolute;display:inline;\">\n";
+
+    out+= "<li>---</li>\n";
+    out+= "<li >\n<a >Tool panel</a>\n";
+    out+= "<ul id=\"KnotMaker-ToolPanelList\" style=\"display:inline;padding-left:0px;margin-left:0px;\">\n";
+for(var i in KnotMaker.ToolPanelList ){
+//~     out+= "<li class=\"menu2Trigger\">\n<a href=\"#\"";
+    out+= "<li class=\"menu2Trigger\" style=\"padding-left:0px;margin-left:0px;\">\n<a ";
+    out+= ' title="'+KnotMaker.ToolPanelList[i][0][1]+'">'+KnotMaker.ToolPanelList[i][0][0];
+    out+="</a>\n";
+    out+="<ul class=\"menu2 menu2DropRight menu2Li\" style=\"position:absolute;display:inline;\">\n";
+    for(var ix in KnotMaker.ToolPanelList[i][1] ){
+        var tileidtip = "'"+KnotMaker.ToolPanelList[i][1][ix]+'\' '+'('+ KnotMaker.ToolPanelList[i][1][ix].charCodeAt(0) +') ' ;
+        out += '<li>';
+//~         out += '<a border=2 href="javascript:" NOWAYonclick="KnotMaker.setTile(\''+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]] +'\')">';
+//~         out += '<a style="border:2px solid blue;">';
+//~         out += '<a style="outline:1px solid blue;">';
+        out += '<a>';
+        out += tileidtip + '<br/>';
+        out += '<img border=1 hspace=0 vspace=0 src="'+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]]+'"';
+        out+=' title="'+tileidtip+KnotMaker.tiles[KnotMaker.ToolPanelList[i][1][ix]]+'"/>';
+        out+='</a>';
+        out += "</li>\n";
+    }
+    out += "</ul>\n";
+    out += "</li>\n";
+}
+    out += "</ul>\n";
+    out+= "</li>\n";
+
+out+= "</ul>\n"; // side menu
+out+= "</div>\n"; // side menu
+
+out+= "</div>\n";
+    out+= '<div id="right" style="padding-left:100px;">';//100px
+//~ out+= KnotMaker.drawEditGrid(20,20);
+out+= KnotMaker.drawEditGrid2(20,20);
+    out+= "</div>\n";
+out+= "</div>\n";
+out+= "</div>\n";
+        return out;
+    };
+
     KnotMaker.about = function(){KnotMaker.alert('jsKnotMaker v'+KnotMaker.VERSION);return false;}
+
+
+    KnotMaker.drawEditGrid2=function(w,h,cs){ // cols rows cypherstring
+        if( cs ){
+            var max = KnotMaker.CountMax(cs);
+            w =  max[0] > w ?  max[0] : w;
+            h =  max[0] > h ?  max[0] : h;
+        } else { cs = {}; }
+
+//~         var out = '<table style="position:relative;" id="KnotMaker-drawEditGrid" class="drawEditGrid" bgcolor="#dddddd" border=0 cols="'+w+'" rows="'+h+'" width="'+ ( w * KnotMaker.tileWidth)+'" height="'+ ( h * KnotMaker.tileHeight) +'"> <tbody>';
+            var out = '<table width="100%" height="100%" id="KnotMaker-drawEditGrid" class="drawEditGrid" bgcolor="#dddddd" border=0 cols="'+w+'" rows="'+h+'"> <tbody>';
+        for (var irow = 0; irow <= w; irow++ ){
+            out += "<tr>\n";
+            for (var icol = 0; icol <= h; icol++ ){
+//~                 var addr = KnotMaker.xIa[irow]+KnotMaker.xIa[icol];
+                var addr = KnotMaker.xIa[icol]+KnotMaker.xIa[irow];
+//~                 var image = ' ';
+                var image = '<img src="'+ KnotMaker.tiles[''] +'"/>';
+                if( cs[addr] ){
+                    image = '<img src="'+ KnotMaker.tiles[cs[addr]] +'"/>';
+                    addr = addr + cs[addr];
+//~ KnotMaker.alert( addr +" " + image);
+                    
+                }
+//~                 out += '<td onclick="KnotMaker.SetdrawEditGridTile(this)" width=50 height=50 title="';
+//~                 out += '<td onclick="KnotMaker.SetdrawEditGridTile(this)" width="'+KnotMaker.tileWidth +'" height="'+KnotMaker.tileHeight+'" title="';
+                out += '<td style=";width:'+KnotMaker.tileWidth +'px; height:'+KnotMaker.tileHeight+'px; background:white;" width="'+KnotMaker.tileWidth +'px" height="'+KnotMaker.tileHeight+'px" title="';
+                out += addr+'">';
+                out += image;
+                out += "</td>\n";
+            }
+            out += "</tr>\n";
+        }
+        out += '</tbody></table>';
+        return out;
+    };
+
+
+
+//~ KnotMaker.drawItIn(body,KnotMaker.drawItWithTileSidebar3())
+    KnotMaker.drawItIn = function(body,str){
+        body.innerHTML=str;
+//~ Error  body.getElementById is not a function
+        KnotMaker.ids.currentTileStatusImg = document.getElementById("KnotMaker-currentTileStatusImg");
+        KnotMaker.ids.currentTileStatusDiv = document.getElementById("KnotMaker-currentTileStatusDiv");
+        KnotMaker.ids.Popup = document.getElementById('KnotMaker-Popup');
+        KnotMaker.ids.PopupText = document.getElementById('KnotMaker-PopupText');
+        KnotMaker.ids.drawEditGrid = document.getElementById("KnotMaker-drawEditGrid");
+        KnotMaker.ids.ToolPanelList = document.getElementById("KnotMaker-ToolPanelList");
+        KnotMaker.ids.predefinedKnots = document.getElementById("KnotMaker-predefinedKnots");
+
+
+    function yalerter(e){
+        var out = "";
+        out+= 'e= '+ e + "\n";
+        if(e.target && e.target.tagName){
+//~ KnotMaker.windowWrite(e.target.tagName + "\n" + e.target.text);
+            if(e.target.tagName === "IMG"){
+                e.preventDefault();
+                e.stopPropagation();
+                e.target.blur();
+                KnotMaker.SetdrawEditGridTile(e.target.parentNode);
+                return false;
+            } else if(e.target.tagName === "TD"){
+                e.preventDefault();
+                e.stopPropagation();
+                e.target.blur();
+                KnotMaker.SetdrawEditGridTile(e.target);
+                return false;
+            }
+        }
+        out+= 'typeof(e.target)= '+ typeof e.target + "\n";
+//~         if( e.target['src'] ){
+//~ http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407/core.html#Node3-setUserData
+//~ REFERENCES javascript: var oo = { s: 1}; var OS=oo; OS.s++; alert( (OS===oo )+ ' '+OS.s+' '+oo.s);
+
+        if( e.target.src ){
+            out+= 'e.target.src= '+ e.target.src + "\n";
+        }
+        for(var i in e){
+            var s = 'e.'+i+'= '+ e[i] ;
+            out+= s.replace(/\s+/g,' ') + "\n";
+        }
+        
+        KnotMaker.windowWrite(out);
+        return;
+    }
+
+
+    KnotMaker.findTable().parentNode.addEventListener('click',function(e){
+        if(e.target && e.target.tagName){
+//~ KnotMaker.windowWrite(e.target.tagName + "\n" + e.target.text);
+            if(e.target.tagName === "IMG"){
+                KnotMaker.SetdrawEditGridTile(e.target.parentNode);
+            } else if(e.target.tagName === "TD"){
+                KnotMaker.SetdrawEditGridTile(e.target);
+            }
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+        e.target.blur();
+        return false;
+    },false);
+
+    KnotMaker.ids.predefinedKnots.addEventListener('click', function(e){
+//~ http://www.quirksmode.org/js/events_order.html
+//~ http://krook.org/jsdom/HTMLAnchorElement.html
+//~ http://www.quirksmode.org/dom/w3c_html.html
+        if(e.target && e.target.tagName && e.target.tagName === "A"){
+            e.preventDefault();
+            e.stopPropagation();
+            e.target.blur();
+            KnotMaker.LoadPredefined2(e.target,e.target.text);
+            return false;
+        }
+        return true;
+    }, false);
+
+        KnotMaker.ids.ToolPanelList.addEventListener('click', function(e){
+            if(e.target && e.target.tagName && e.target.tagName === "IMG"){
+//~ http://www.quirksmode.org/js/events_order.html
+//~             if( e.target.src.match(/(tile.*?)$/)){ // TODO
+                if( e.target.title.match(/^\'([^\']+?)\'/)){ // TODO
+                    KnotMaker.setTile(KnotMaker.tiles[RegExp.$1]);
+
+//~ KnotMaker.windowWrite(e.target.tagName + "\n" + e.target.src + "\n" + e.target.title);
+                } else {
+                    KnotMaker.setTile(KnotMaker.tiles['']);
+                }
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, false);
+
+        return;
+    }
 
 //~ document.write(KnotMaker.drawIt());
 //~ document.write(KnotMaker.drawItWithTileSidebar());
